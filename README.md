@@ -28,7 +28,7 @@ Gitee仓库地址： https://gitee.com/novel_dev_team/novel-plus
 
 1、网站首页
 
-![image-20210828194849211](E:\typora-图片\image-20210828194849211.png)
+![image-20210828194849211](https://github.com/srg000/blog/blob/master/img/image-20210828194849211.png)
 
 2、博客首页
 
