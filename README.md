@@ -4,7 +4,7 @@
 
 > ​	***作者：幽弥狂***
 
-GitHub仓库地址： https://github.com/201206030/novel-plus
+GitHub仓库地址： https://github.com/srg000/blog
 
 Gitee仓库地址： https://gitee.com/novel_dev_team/novel-plus
 
