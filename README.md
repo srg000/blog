@@ -32,35 +32,35 @@ Gitee仓库地址： https://gitee.com/novel_dev_team/novel-plus
 
 2、博客首页
 
-![image-20210828194817474](E:\typora-图片\image-20210828194817474.png)
+![image-20210828194817474](https://github.com/srg000/blog/blob/master/img/image-20210828194817474.png)
 
 3、博客详情页
 
-![image-20210828195022763](E:\typora-图片\image-20210828195022763.png)
+![image-20210828195022763](https://github.com/srg000/blog/blob/master/img/image-20210828195022763.png)
 
 4、归档页
 
-![image-20210828195135800](E:\typora-图片\image-20210828195135800.png)
+![image-20210828195135800](https://github.com/srg000/blog/blob/master/img/image-20210828195135800.png)
 
 5、发布博客
 
-![image-20210828195306247](E:\typora-图片\image-20210828195306247.png)
+![image-20210828195306247](https://github.com/srg000/blog/blob/master/img/image-20210828195306247.png)
 
 6、个人中心
 
-![image-20210828195340342](E:\typora-图片\image-20210828195340342.png)
+![image-20210828195340342](https://github.com/srg000/blog/blob/master/img/image-20210828195340342.png)
 
 7、个人的博客列表
 
-![image-20210828195420132](E:\typora-图片\image-20210828195420132.png)
+![image-20210828195420132](https://github.com/srg000/blog/blob/master/img/image-20210828195420132.png)
 
 
 
 ##  后台管理系统截图
 
-![image-20210828195515881](E:\typora-图片\image-20210828195515881.png)
+![image-20210828195515881](https://github.com/srg000/blog/blob/master/img/image-20210828195515881.png)
 
-![image-20210828195539401](E:\typora-图片\image-20210828195539401.png)
+![image-20210828195539401](https://github.com/srg000/blog/blob/master/img/image-20210828195539401.png)
 
 ##  安装说明
 
