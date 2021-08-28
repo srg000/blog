@@ -6,7 +6,7 @@
 
 GitHub仓库地址： https://github.com/srg000/blog
 
-Gitee仓库地址： https://gitee.com/novel_dev_team/novel-plus
+Gitee仓库地址： https://gitee.com/song-rengang/blog
 
 
 
@@ -92,6 +92,6 @@ Gitee仓库地址： https://gitee.com/novel_dev_team/novel-plus
 
 ##  代码仓库
 
-GitHub仓库地址： https://github.com/201206030/fiction_house
+GitHub仓库地址： https://github.com/srg000/blog
 
-Gitee仓库地址： https://gitee.com/novel_dev_team/fiction_house
+Gitee仓库地址： https://gitee.com/song-rengang/blog
