@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="_fragments :: head(~{::title})">
+  <title>标签</title>
+</head>
+
+<body>
+  <!-- 导航 -->
+  <nav th:replace="_fragments :: menu(3)"></nav>
+
+  <!-- 中间部分 -->
+  <div class="m-container m-padded-td-big animate__animated animate__pulse">
+    <!-- ui container：可以切换多端 -->
+    <div class="ui container">
+      <!-- header -->
+      <div class="ui top attached segment">
+        <div class="ui middle aligned two column grid">
+          <div class="column">
+            <h3 class="ui teal header">标签</h3>
+          </div>
+          <div class="right aligned column">
+            共 <h2 class="ui orange header m-inline-block m-text-thin">[[${tagList.size()}]]</h2> 个
+          </div>
+        </div>
+      </div>
+
+      <!-- 所有标签分类 -->
+      <div class="ui attached segment m-padded-td-large">
+        <div class="ui labeled button m-margin-tb-tiny" th:each="tag : ${tagList}">
+          <a th:href="@{'/tag/goTagsPage/' + ${tag.id} + '/0/5'}" class="ui basic  button" th:classappend="${tag.id == activeTagId} ? 'teal'">[[${tag.name}]]</a>
+          <div class="ui basic  left pointing label" th:classappend="${tag.id == activeTagId} ? 'teal'" >[[${tag.blogCount}]]</div>
+        </div>
+      </div>
+
+
+      <div class="ui top attached teal stackable segment m-padded-tb-large m-padded-rl m-margin-b-large" th:if="${blogList.dataList == null}">
+        <div style="height: 500px;text-align: center">
+          <p class="m-text-style">——TOTALY 0 POSTS——</p>
+          <p class="m-text-thin m-padded-td-large" style="font-size: 16px">这里空空如也</p>
+          <p class="m-text-thin" style="font-size: 16px">你再试试其他分类吧..</p>
+        </div>
+      </div>
+
+      <!-- 对应选中分类的列表 -->
+      <div class="ui top attached teal segment" th:unless="${blogList.dataList == null}">
+
+        <div th:fragment="typeToBlogList">
+          <div class="ui padded vertical segment m-padded-td-large m-mobile-lr-clear" th:each="blog : ${blogList.dataList}">
+
+            <div class="ui middle aligned mobile reversed stackable grid">
+              <div class="eleven wide column">
+                <h3 class="ui header" ><a th:href="@{'/getBlogById/' + ${blog.id}}" style="text-decoration: none">[[${blog.title}]]</a></h3>
+                <p class="m-text" th:text="${blog.content}"></p>
+                <br>
+                <div class="ui grid">
+                  <div class="eleven wide column">
+                    <!-- horizontal：水平list -->
+                    <div class="ui mini horizontal link list">
+                      <div class="item">
+                        <img th:src="${blog.user.avatarUrl}" style="width: 30px; height: 30px" alt="" class="ui avatar image">
+                        <div class="content"><a href="#" class="header" th:text="${blog.user.nikeName}">宋仁刚</a></div>
+                      </div>
+                      <div class="item">
+                        <i class="calendar icon"></i>[[${blog.parseUpdateTime}]]
+                      </div>
+                      <div class="item">
+                        <i class="eye icon"></i>[[${blog.views}]]
+                      </div>
+                    </div>
+                  </div>
+                  <div class="right aligned five wide column">
+                    <a href="#" target="_blank" class="ui teal basic label m-padded-tiny m-text-thin" th:text="${blog.blogType.name}"></a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="five wide column">
+                <a th:href="@{'/getBlogById/' + ${blog.id}}" style="text-decoration: none">
+                  <img th:src="${blog.firstPicture}" alt="" class="ui rounded image">
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+
+      <!-- footer -->
+      <div class="ui  segment" th:unless="${blogList.dataList == null}" th:if="${blogList.dataNum > 5}">
+        <div class="ui middle aligned two column grid" >
+          <div class="column" >
+            <a th:href="@{'/tag/goTagsPage/' + ${activeTagId} + '/' + (${blogList.currentPage}-1) + '/5'}"  class="ui mini teal basic button">上一页</a>
+          </div>
+          <div class="right aligned column" >
+            <a th:href="@{'/tag/goTagsPage/' + ${activeTagId} + '/' + (${blogList.currentPage}-(-1)) + '/5'}"  class="ui mini teal basic button">下一页</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <br>
+  <br>
+
+  <!-- 底部footer -->
+  <footer th:replace="_fragments :: footer"></footer>
+
+  <!-- 引入jquery和semantic-ui的js文件 -->
+<!--  <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>-->
+<!--  <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>-->
+  <script type='text/javascript'>
+    $('.menu.toggle').click(function () {
+      // toggleClass：像开关一样的方法，如果开着就关了，如果关了，就开着
+      $('.m-item').toggleClass('m-mobile-hide');
+    });
+
+    $('#editBlog').click(function() {
+      var isLogin = $('#isLogin').text()
+
+      if (Object.keys(isLogin).length === 0) {
+        layer.alert('请先登录')
+        // window.location.href = "/login"
+      } else {
+        window.location.href = "/blog/goEditBlogPage"
+      }
+    })
+  </script>
+</body>
+
+</html>

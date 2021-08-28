@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="_fragments :: head(~{::title})">
+  <title>关于千百度工作室</title>
+</head>
+<style>
+  /*body {*/
+
+  /*  background-color: #F5F5DC;*/
+  /*}*/
+  .box {
+
+    margin: auto;
+    width: 1000px;
+    height: 650px;
+    position: relative;
+  }
+  .box img {
+
+    border: 1px solid white;
+    padding: 10px;
+    width: 300px;
+    box-shadow: 1px 1px 5px #666;
+    border-radius: 10px;
+    transition: all 1s;
+  }
+  .box img:hover {
+
+    transform: scale(1.5,1.5);
+    z-index: 1;
+  }
+  .img1 {
+
+    position: absolute;
+    top: 181px;
+    left: 220px;
+    transform: rotate(45deg);
+  }
+  .img2 {
+
+    position: absolute;
+    top: 248px;
+    left: 62px;
+    transform: rotate(-25deg);
+  }
+  .img3 {
+
+    position: absolute;
+    top: 97px;
+    left: 392px;
+    transform: rotate(15deg);
+  }
+  .img4 {
+
+    position: absolute;
+    top: 280px;
+    left: 431px;
+    transform: rotate(-65deg);
+  }
+  .img5 {
+
+    position: absolute;
+    top: 133px;
+    left: 13px;
+    transform: rotate(40deg);
+  }
+  .img6 {
+
+    position: absolute;
+    top: 393px;
+    left: 238px;
+    transform: rotate(-30deg);
+  }
+</style>
+
+<body>
+  <!-- 导航 -->
+  <nav th:replace="_fragments :: menu(0)"></nav>
+
+  <!-- 中间部分 -->
+  <div class="m-padded-td-big animate__animated animate__flipInX">
+    <!-- ui container：可以切换多端 -->
+    <div class="ui container">
+      <div class="ui stackable grid" >
+        <!-- 左边部分：照片 -->
+        <div class="eleven wide column" >
+<!--          <div class="ui segment">-->
+<!--            &lt;!&ndash; rounded:圆角 &ndash;&gt;-->
+<!--            <img th:src="@{/images/bg.jpg}" alt="" class="ui rounded image" style="width: 900px;height: 500px">-->
+<!--          </div>-->
+          <div class="box">
+            <img src="https://xiaoqianbai-blog-static.oss-cn-beijing.aliyuncs.com/2021/blog-community/1.jpg" class="img1">
+            <img src="https://xiaoqianbai-blog-static.oss-cn-beijing.aliyuncs.com/2021/blog-community/2.jpg" class="img2">
+            <img src="https://xiaoqianbai-blog-static.oss-cn-beijing.aliyuncs.com/2021/blog-community/3.jpg" class="img3">
+            <img src="https://xiaoqianbai-blog-static.oss-cn-beijing.aliyuncs.com/2021/blog-community/4.png" class="img4">
+            <img src="https://xiaoqianbai-blog-static.oss-cn-beijing.aliyuncs.com/2021/blog-community/5.png" class="img5">
+            <img src="https://xiaoqianbai-blog-static.oss-cn-beijing.aliyuncs.com/2021/blog-community/6.png" class="img6">
+
+          </div>
+        </div>
+
+        <!-- 右边部分：介绍 -->
+        <div class="five wide column">
+          <div class="ui top attached segment">
+            <div class="ui header">千百度工作室</div>
+          </div>
+          <!-- 个人简介 -->
+          <div class="ui attached segment">
+            <p class="m-text">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;千百度工作室成立于2009年3月， 社团以软件设计与实现为主要研究方向，致力于 web前端，web后端，小程序开发, 经过多年的发展与沉淀，已经具备完善的学习计划与管理体系。
+              多年来，我们始终要求成员谨循"强志笃行，夯基创新"的教诲，社团一直秉持"严谨认真，一丝不苟"的态度进行学术研究，培养社团成员“勇于尝试，善于创新”的精神，共同打造一支
+              “团结一致，互帮互助”的团队
+            </p>
+          </div>
+
+          <!-- 个人标签 -->
+          <div class="ui attached segment">
+            <div class="ui teal basic label m-margin-tb-tiny">大前端</div>
+            <div class="ui teal basic label m-margin-tb-tiny">Java后端开发</div>
+            <div class="ui teal basic label m-margin-tb-tiny">小程序开发</div>
+          </div>
+      </div>
+    </div>
+  </div>
+  <br>
+  <br>
+
+  <!-- 底部footer -->
+    <footer class="ui inverted vertical segment m-padded-td-massive" style="margin-bottom: -50px">
+      <div class="ui center aligned container">
+        <div class="ui inverted divided stackable grid">
+          <div class="three wide column">
+            <div class="ui inverted link list">
+              <div class="item">
+                <img th:src="@{/images/wechat.jpg}" class="ui rounded image" alt="" style="width: 110px;">
+              </div>
+            </div>
+          </div>
+          <div class="four wide column">
+            <h4 class="ui inverted header m-text-thin m-text-spaced ">推荐</h4>
+            <div class="ui inverted link list">
+              <a th:href="#{footer.recommended.markdown}" class="item" target="_blank">Markdown语法</a>
+              <a th:href="#{footer.recommended.front}" class="item" target="_blank">前端学习路线</a>
+              <a th:href="#{footer.recommended.back}" class="item" target="_blank">后端学习路线</a>
+            </div>
+          </div>
+          <div class="four wide column">
+            <h4 class="ui inverted header m-text-thin m-text-spaced ">联系我</h4>
+            <div class="ui inverted link list">
+              <a href="#" class="item" th:text="#{footer.email}"></a>
+              <a href="#" class="item" th:text="#{footer.qq}"></a>
+            </div>
+          </div>
+          <div class="five wide column">
+            <h4 class="ui inverted header m-text-thin m-text-spaced ">该网站</h4>
+            <p m-text-thin m-text-spaced m-opacity-mini>这是我的个人博客、会分享关于编程、协作、思考相关的任何内容，希望可以给来到这儿的人有所帮助...</p>
+          </div>
+        </div>
+        <div class="ui inverted section divider"></div>
+        <p m-text-thin m-text-spaced m-opacity-tiny>Copyright &copy; 2021-2021 srgstart All Rights Reserved V.3.1.5
+          豫ICP备2021009487号</p>
+      </div>
+    </footer>
+
+  <script type='text/javascript'>
+    $('.menu.toggle').click(function () {
+      // toggleClass：像开关一样的方法，如果开着就关了，如果关了，就开着
+      $('.m-item').toggleClass('m-mobile-hide');
+    });
+
+    $('.qq').popup();
+
+    $('.wechat').popup({
+      popup: $('.wechat-qr'),
+      on: 'hover',
+      position: 'bottom center'
+    });
+
+    $('#editBlog').click(function() {
+      var isLogin = $('#isLogin').text()
+
+      if (Object.keys(isLogin).length === 0) {
+        layer.alert('请先登录')
+        // window.location.href = "/login"
+      } else {
+        window.location.href = "/blog/goEditBlogPage"
+      }
+    })
+  </script>
+</body>
+
+</html>

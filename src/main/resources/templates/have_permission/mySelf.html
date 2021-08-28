@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="_fragments :: head(~{::title})">
+  <title>个人中心</title>
+</head>
+
+<style>
+  #rank a:hover {
+    color: rgb(226, 15, 156) !important;;
+  }
+
+</style>
+<style>
+  .mask {
+    position: absolute;
+    top: 14px;
+    left: 113px;
+    width: 100px;
+    height: 100px;
+    background: rgba(101, 101, 101, 0.6);
+    color: #ffffff;
+    opacity: 0;
+    border-radius: 145px ;
+  }
+  .mask h3 {
+    text-align: center;
+  }
+  a:hover .mask {
+    opacity: 1;
+  }
+</style>
+
+<body>
+  <!-- 导航 -->
+  <nav th:replace="_fragments :: menu(0)"></nav>
+
+
+  <!-- 中间部分 -->
+  <div class="m-padded-td-big">
+    <div class="ui container">
+      <div class="ui stackable grid">
+
+        <!-- 左边5份布局(右边top) -->
+        <div class="five wide column animate__animated animate__fadeInLeft ">
+          <div id="personalInfo" class="ui segment">
+
+              <img id="userAvatar" th:src="@{${user.avatarUrl}}" width="100px" height="100px" class="ui centered circular image p">
+              <a href="#" id="updateAvatar">
+                <div class="mask">
+                  <h3>
+                    <i class="blue edit icon" style="margin-top: 36px;margin-left: 10px;"></i>
+                  </h3>
+
+                </div>
+              </a>
+              <p class="ui center aligned header m-padded-tb-min p2" text="${}" id="loginUserName">[[${user.nikeName}]]</p>
+
+            <div class="ui grid">
+              <div class="three wide column"></div>
+              <div class="five wide column card-info-data-item is-center" style="display: table-cell;text-align: center">
+                  <div class="headline" style="color: rgb(153,154,170);font-size: 1em;">被访问量</div>
+                  <div class="length-num" style="margin-top: 0.7rem;color: black;font-size: 1.4em;" th:text="${views}">1745</div>
+              </div>
+
+              <div class="four wide column card-info-data-item is-center" style="display: table-cell;text-align: center">
+                <a  th:href="@{'/blog/getPerBlog/0/4/'+ ${user.id} +'/null/null/false'}" style="text-decoration: none">
+                  <div class="headline" style="color: rgb(153,154,170);font-size: 1em;">文章</div>
+                  <div class="length-num" style="margin-top: 0.7rem;color: black;font-size: 1.4em;" th:text="${count}"></div>
+                </a>
+              </div>
+              <div class="four wide column"></div>
+            </div>
+
+
+          </div>
+
+          <!-- 热文排行 -->
+          <div class="ui segments m-margin-tb-large">
+            <div class="ui secondary segment m-black">
+              <i class="bookmark icon"></i>我的博客
+            </div>
+            <div class="ui segment">
+              <div id="rank" class="ui segment" th:each="rank,iter : ${blogList}">
+                <a th:href="@{'/getBlogById/' + ${rank.id}}"   class="m-black m-text-thin" style="text-decoration: none;">
+                  [[${rank.title}]]
+                  &nbsp;<i class="eye icon"></i>[[${rank.views}]]
+                </a>
+              </div>
+            </div>
+          </div>
+      </div>
+
+        <!-- 右边11份布局(博客列表) -->
+        <div class="eleven wide column animate__animated animate__fadeInRight">
+
+          <div class="ui secondary pointing menu">
+            <a class="item active">
+              基本信息
+            </a>
+          </div>
+          <div class="ui segment">
+            <form class="ui form">
+              <div class="field">
+                <label>用户姓名</label>
+                <input type="text" name="nikeName" placeholder="用户昵称" th:value="${user.nikeName}">
+              </div>
+              <div class="field">
+                <label>用户ID</label>
+                <input type="text" name="id" placeholder="用户ID" style="background-color: #cccccc" readonly th:value="${user.id}">
+              </div>
+
+              <div class="field">
+                <label>个人简介</label>
+                <textarea id="personIntroduce" rows="3" name="personIntroduce" placeholder="个人简介"></textarea>
+              </div>
+                <button id="back-btn" class="ui  button" type="button">返回</button>
+                <button class="ui teal button" type="button" id="updateUserInfo">保存</button>
+            </form>
+          </div>
+
+
+          <div class="ui secondary pointing menu">
+            <a class="item active">
+              账号管理
+            </a>
+          </div>
+          <div class="ui segment">
+            <form class="ui form">
+              <div class="field">
+                <label>密码</label>
+                <input type="text" name="first-name" placeholder="密码" style="width: 500px; background-color: #cccccc" value="********" readonly>
+                <button id="updatePwd" class="ui blue button" type="button">修改密码</button>
+              </div>
+              <div class="field">
+                <label>手机号</label>
+                <input type="text" name="last-name" placeholder="手机号"  style="width: 500px; background-color: #cccccc" readonly th:value="${user.phone}">
+                <button id="updatePhone" class="ui blue button" type="button">修改手机号</button>
+              </div>
+            </form>
+          </div>
+
+
+        </div>
+    </div>
+  </div>
+  <br>
+  <br>
+
+    <!-- 上传图片弹出层-->
+    <div class="layui-upload-drag" id="test10" style="display: none; width: 500px;">
+      <i class="layui-icon"></i>
+      <p>点击上传，或将文件拖拽到此处</p>
+      <div class="layui-hide" id="uploadDemoView">
+        <hr>
+        <img src="" alt="上传成功后渲染" style="max-width: 115px">
+      </div>
+    </div>
+
+    <!-- 修改密码弹出层-->
+    <form id="updatePwdForm" class="layui-form layui-form-pane" action="" style="display: none">
+      <br>
+      <br>
+      <div class="layui-form-item">
+        <label class="layui-form-label">原密码</label>
+        <div class="layui-input-block">
+          <input type="password" id="oldPassword" name="oldPassword" lay-verify="required|password" autocomplete="off" placeholder="请输入原密码" class="layui-input">
+        </div>
+      </div>
+
+      <div class="layui-form-item">
+        <label class="layui-form-label">修改密码</label>
+        <div class="layui-input-block">
+          <input type="password" name="newPassword" lay-verify="required|password" autocomplete="off" placeholder="请输入要修改的密码" class="layui-input">
+        </div>
+      </div>
+
+      <div class="layui-form-item">
+        <label class="layui-form-label">确认密码</label>
+        <div class="layui-input-block">
+          <input type="password" name="checkPassword" lay-verify="required|confirmPass" autocomplete="off" placeholder="请确认密码" class="layui-input">
+        </div>
+      </div>
+
+      <br>
+      <button style="margin-left: 400px" class="ui blue button layui-btn" type="button"  id="updateUserPwd" lay-filter="updateUserPwd" lay-submit>修改</button>
+    </form>
+
+    <!-- 修改手机号-->
+    <form id="updatePhoneForm" class="layui-form" action="" style="display: none">
+      <br>
+      <br>
+      <div style="margin-left: 20px">
+        <p style="font-weight: bolder">验证码将发送到手机 [[${user.phone}]] </p>
+        <p class="m-margin-top-small" style="font-weight: lighter;">如果长时间未收到验证码，请检查是否将运营商拉黑</p>
+      </div>
+      <br>
+      <div class="layui-form-item" style="display: inline-block">
+        <label style="width: 105px; " class="layui-form-label">填写验证码:</label>
+        <div class="layui-input-block" style="">
+          <input style="width: 200px;!important;" type="text" name="title" required  lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+      <button type="button" style="width: 125px; display: inline-block" class="ui button">获取验证码</button>
+      <button style="margin-left: 180px;" class="ui teal button" type="button" id="next">下一步</button>
+    </form>
+
+    <!-- 修改手机号-->
+    <form id="bindPhoneForm" class="layui-form" action="" style="display: none">
+      <br>
+      <br>
+      <div class="layui-form-item">
+        <label style="width: 118px; " class="layui-form-label">输入新手机号:</label>
+        <div class="layui-input-block" style="">
+          <input style="width: 315px;!important;" type="text" name="title" required  lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+
+      <div class="layui-form-item" style="display: inline-block">
+        <label style="width: 104px; " class="layui-form-label">填写验证码:</label>
+        <div class="layui-input-block" style="">
+          <input style="width: 200px;!important;" type="text" name="title" required  lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+      <button type="button" style="width: 125px; display: inline-block" class="ui button">获取验证码</button>
+      <button style="margin-left: 170px;" class="ui teal button" type="button" id="next">绑定</button>
+    </form>
+
+  </div>
+    <!-- 底部footer -->
+    <footer class="ui inverted vertical segment m-padded-td-massive" style="margin-bottom: -50px">
+      <div class="ui center aligned container">
+        <div class="ui inverted divided stackable grid">
+          <div class="three wide column">
+            <div class="ui inverted link list">
+              <div class="item">
+                <img th:src="@{/images/wechat.jpg}" class="ui rounded image" alt="" style="width: 110px;">
+              </div>
+            </div>
+          </div>
+          <div class="four wide column">
+            <h4 class="ui inverted header m-text-thin m-text-spaced ">推荐</h4>
+            <div class="ui inverted link list">
+              <a th:href="#{footer.recommended.markdown}" class="item" target="_blank">Markdown语法</a>
+              <a th:href="#{footer.recommended.front}" class="item" target="_blank">前端学习路线</a>
+              <a th:href="#{footer.recommended.back}" class="item" target="_blank">后端学习路线</a>
+            </div>
+          </div>
+          <div class="four wide column">
+            <h4 class="ui inverted header m-text-thin m-text-spaced ">联系我</h4>
+            <div class="ui inverted link list">
+              <a href="#" class="item" th:text="#{footer.email}"></a>
+              <a href="#" class="item" th:text="#{footer.qq}"></a>
+            </div>
+          </div>
+          <div class="five wide column">
+            <h4 class="ui inverted header m-text-thin m-text-spaced ">该网站</h4>
+            <p m-text-thin m-text-spaced m-opacity-mini>这是我的个人博客、会分享关于编程、协作、思考相关的任何内容，希望可以给来到这儿的人有所帮助...</p>
+          </div>
+        </div>
+        <div class="ui inverted section divider"></div>
+        <p m-text-thin m-text-spaced m-opacity-tiny>Copyright &copy; 2021-2021 srgstart All Rights Reserved V.3.1.5
+          豫ICP备2021009487号</p>
+      </div>
+    </footer>
+
+
+  <script th:src="@{/js/jquerysession.js}"></script>
+    <script type='text/javascript'>
+    $('.menu.toggle').click(function () {
+      // toggleClass：像开关一样的方法，如果开着就关了，如果关了，就开着
+      $('.m-item').toggleClass('m-mobile-hide');
+    });
+
+
+    $('#editBlog').click(function() {
+      var isLogin = $('#isLogin').text()
+
+      if (Object.keys(isLogin).length === 0) {
+        layer.alert('请先登录')
+        // window.location.href = "/login"
+      } else {
+        window.location.href = "/blog/goEditBlogPage"
+      }
+    })
+
+    $('#back-btn').click(function () {
+      location.reload();
+    })
+
+    var updateImg;
+    $('#updateAvatar').click(function () {
+      updateImg = layer.open({
+        type: 1,
+        title: '更换头像',
+        content: $('#test10'),
+        area: ['500px', '300px'],
+        anim: 1,
+        closeBtn: 2
+      })
+    })
+
+    var updatePwd;
+    $('#updatePwd').click(function () {
+      updatePwd = layer.open({
+        type: 1,
+        title: '修改密码',
+        content: $('#updatePwdForm'),
+        area: ['500px', '300px'],
+        skin: 'layui-layer-lan',
+        anim: 2,
+        closeBtn: 2
+      })
+    })
+
+    var index;
+    $('#updatePhone').click(function () {
+      index = layer.open({
+        type: 1,
+        title: '修改手机号',
+        content: $('#updatePhoneForm'),
+        area: ['500px', '300px'],
+        anim: 2,
+        closeBtn: 2
+      })
+    })
+    $('#next').click(function () {
+      layer.close(index);
+      layer.open({
+        type: 1,
+        title: '绑定新手机号',
+        content: $('#bindPhoneForm'),
+        area: ['500px', '300px'],
+        anim: 2,
+        closeBtn: 2
+      })
+    })
+
+
+
+    // 用户修改头像
+    layui.use(['upload','form'],function () {
+      var upload = layui.upload;
+      var form = layui.form;
+      //拖拽上传
+      upload.render({
+        elem: '#test10'
+        ,url: '/api/oss//fileUpload/userFile' //上传接口
+        ,field: 'file'  // 与后台参数名对应
+        ,accept: 'images'
+        ,done: function(res){
+
+          $('#userAvatar').attr('src',res.imgUrl)
+          layui.$('#uploadDemoView').removeClass('layui-hide').find('img').attr('src', res.imgUrl);
+          $('#userAvatarUrl').attr('src',res.imgUrl)
+
+          $.post('/user/updateSessionInfo',{imgUrl: res.imgUrl},function(data) {
+            if (data === 200) {
+              layer.msg('上传成功');
+              layer.close(updateImg)
+            }
+          })
+
+        }
+        ,error: function(){
+          //请求异常回调
+          layer.msg("上传失败，请检查网络")
+        }
+      });
+
+
+      form.verify({
+        password: function (value, item) {
+          if (value.length < 6 || value.length > 16) {
+            return "密码由6-16位数字、字母组成"
+          }
+        },
+        confirmPass:function(value){
+          if($('input[name=newPassword]').val() !== value)
+            return '两次输入密码不一致！';
+        }
+      })
+
+      // function checkPassword() {
+      //   $('#oldPassword').blur(function () {
+      //     var password = $('input[name=oldPassword]').val()
+      //     $.post('/user/checkPassword',{password:password},function (data) {
+      //       if (data === 500) {
+      //         layer.msg('密码错误')
+      //         return false;
+      //       } else {
+      //         return true;
+      //       }
+      //     })
+      //   })
+      // }
+
+
+
+      form.on('submit(updateUserPwd)',function (data) {
+        form.verify()
+          var newPassword = $('input[name=newPassword]').val()
+          var oldPassword = $('input[name=oldPassword]').val()
+          $.post('/user/updateUserPwd',{oldPassword:oldPassword,newPassword:newPassword},function (data) {
+            if (data === 200) {
+              layer.msg('修改成功')
+              layer.close(updatePwd)
+              window.location.href="/login"
+            } else {
+              layer.msg('修改失败，请检查是否密码错误！')
+            }
+          })
+
+      })
+
+
+    })
+
+    $('#personIntroduce').focus(function () {
+      layer.tips('可以选择不填写','#personIntroduce')
+    })
+
+    $('#updateUserInfo').click(function () {
+      var id = $('[name="id"]').val();
+      var nikeName = $('[name="nikeName"]').val();
+      $.post('/user/updateUserById',{id:id,nikeName:nikeName},function (data) {
+        if (data === 200) {
+          $('[name="nikeName"]').val(nikeName);
+          $('#loginUserName').html(nikeName);
+          layer.msg('保存成功！')
+        }
+      })
+    })
+
+
+
+
+
+
+  </script>
+</body>
+
+</html>

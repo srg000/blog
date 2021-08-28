@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="_fragments :: head(~{::title})">
+  <title>关于我</title>
+</head>
+
+<body>
+  <!-- 导航 -->
+  <nav th:replace="_fragments :: menu(0)"></nav>
+
+  <!-- 中间部分 -->
+  <div class="m-padded-td-big animate__animated animate__flipInX">
+    <!-- ui container：可以切换多端 -->
+    <div class="ui container">
+      <div class="ui stackable grid">
+        <!-- 左边部分：照片 -->
+        <div class="eleven wide column">
+          <div class="ui segment">
+            <!-- rounded:圆角 -->
+            <img th:src="@{/images/bg.jpg}" alt="" class="ui rounded image" style="width: 900px;height: 500px">
+          </div>
+        </div>
+
+        <!-- 右边部分：介绍 -->
+        <div class="five wide column">
+          <div class="ui top attached segment">
+            <div class="ui header">关于我</div>
+          </div>
+          <!-- 个人简介 -->
+          <div class="ui attached segment">
+            <p class="m-text">宋仁刚，一个Java开发者，折腾于 0 和 1 世界的菜鸟；在头秃的路上，从未停止，希望结识可以共同成长的小伙伴</p>
+            <p class="m-text">热爱编程，喜欢折腾，正在探索高效学习编程技术的方法...</p>
+            </p>
+          </div>
+          <!-- 个人标签 -->
+          <div class="ui attached segment">
+            <div class="ui orange basic label m-margin-tb-tiny">编程</div>
+            <div class="ui orange basic label m-margin-tb-tiny">漫画</div>
+            <div class="ui orange basic label m-margin-tb-tiny">篮球</div>
+            <div class="ui orange basic label m-margin-tb-tiny">吹牛皮</div>
+          </div>
+          <!-- 技术标签 -->
+          <div class="ui attached segment">
+            <div class="ui teal basic label m-margin-tb-tiny">Java</div>
+            <div class="ui teal basic label m-margin-tb-tiny">MySQL</div>
+            <div class="ui teal basic label m-margin-tb-tiny">Redis</div>
+            <div class="ui teal basic label m-margin-tb-tiny">Vue</div>
+            <div class="ui teal basic label m-margin-tb-tiny">JavaScript</div>
+            <div class="ui teal basic label m-margin-tb-tiny">React</div>
+            <div class="ui teal basic label m-margin-tb-tiny">...</div>
+          </div>
+          <!-- 联系我 -->
+          <div class="ui bottom attached segment">
+            <a th:href="#{github}" class="ui circular icon button"><i class="github icon"></i></a>
+            <a href="#" class="ui wechat circular icon button"><i class="weixin icon"></i></a>
+            <a href="#" class="ui qq circular icon button" data-content="2224264747" data-position="bottom center"><i
+                class="qq icon"></i></a>
+          </div>
+
+          <div class="ui wechat-qr flowing popup transition hidden">
+            <img th:src="@{/images/wechat.jpg}" alt="" class="ui rounded image" style="width: 110px;">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+  <br>
+
+  <!-- 底部footer -->
+  <footer th:replace="_fragments :: footer"></footer>
+
+  <!-- 引入jquery和semantic-ui的js文件 -->
+<!--  <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>-->
+<!--  <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>-->
+  <script type='text/javascript'>
+    $('.menu.toggle').click(function () {
+      // toggleClass：像开关一样的方法，如果开着就关了，如果关了，就开着
+      $('.m-item').toggleClass('m-mobile-hide');
+    });
+
+    $('.qq').popup();
+
+    $('.wechat').popup({
+      popup: $('.wechat-qr'),
+      on: 'hover',
+      position: 'bottom center'
+    });
+
+    $('#editBlog').click(function() {
+      var isLogin = $('#isLogin').text()
+
+      if (Object.keys(isLogin).length === 0) {
+        layer.alert('请先登录')
+        // window.location.href = "/login"
+      } else {
+        window.location.href = "/blog/goEditBlogPage"
+      }
+    })
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,48 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://47.98.197.215:3306/blog?useSSL=false&characterEncoding=utf-8&serverTimezone=UTC
+    username: root
+    password: root
+  ### 返回json的全局时间格式
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+  ### redis基本配置
+  redis:
+    host: 47.98.197.215
+    port: 6379
+    database: 0
+    timeout: 1800000
+    password: root
+
+  ### 修改最大上传文件限制
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 1000MB
+
+#开启mybatis-plus日志功能
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+  mapper-locations: classpath:com/srgstart/blog/mapper/xml/*.xml
+
+
+### 腾讯云中短信服务的相关信息
+sms.appId: 1400503288
+sms.appKey: 39eb6376ba70e5a1629b52cd4b430bc1
+sms.templateId: 913076
+sms.sign: 小千百
+
+### 阿里云oss对象存储
+aliyun.oss.endpoint: oss-cn-beijing.aliyuncs.com
+aliyun.oss.accessKeyId: LTAI5tMtTXPQUFRokUBdW1Wm
+aliyun.oss.secret: EEatINa0RGIIDfK3xTFWol6laEEQ49
+aliyun.oss.bucket: xiaoqianbai-blog-static
+server:
+  port: 9000
+
+# 日志级别以及输出目录没定义

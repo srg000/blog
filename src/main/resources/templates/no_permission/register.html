@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>注册页</title>
+	<!-- 引入semantic-ui的css -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+	<link rel="stylesheet" th:href="@{/css/me.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/bootstrap/css/bootstrap.min.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/font-awesome-4.7.0/css/font-awesome.min.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/iconic/css/material-design-iconic-font.min.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/util.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
+	<!-- 引入 layui.css -->
+	<link rel="stylesheet" href="//unpkg.com/layui@2.6.8/dist/css/layui.css">
+	<!-- 引入动画的css -->
+	<link rel="stylesheet" th:href="@{/css/animate.css}">
+	<link rel="shortcut icon" th:href="@{/images/logo.png}" type="image/x-icon">
+	<script src="//unpkg.com/layui@2.6.8/dist/layui.js"></script>
+</head>
+
+<body>
+
+<nav th:replace="_fragments :: menu(0)"></nav>
+
+	<div class="limiter">
+		<div class="container-login100" >
+			<div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54 animate__animated animate__fadeInRight">
+				<form class="login100-form validate-form"  method="post" th:action="@{/user/userRegister}">
+
+
+					<span  class="login100-form-title p-b-49">注册</span>
+
+					<!-- 手机号-->
+					<div class="wrap-input100 validate-input m-b-23 alert-validate" th:if="${session.resultApi != null} and (${session.resultApi.code == 310} or ${session.resultApi.code == 312})" th:data-validate="${session.resultApi.message}">
+						<span class="label-input100">手机号</span>
+						<input id="phone" class="input100" type="text" name="phone" placeholder="请输入手机号" autocomplete="off">
+						<span class="focus-input100" data-symbol="&#xf405;"> </span>
+					</div>
+					<div class="wrap-input100 validate-input m-b-23" th:unless="${session.resultApi != null} and (${session.resultApi.code == 310} or ${session.resultApi.code == 312})" data-validate="请输入手机号">
+						<span class="label-input100">手机号</span>
+						<input id="phone" class="input100" type="text" name="phone" placeholder="请输入手机号" autocomplete="off">
+						<span class="focus-input100" data-symbol="&#xf405;"> </span>
+					</div>
+
+					<!--验证码-->
+					<div style="width: 75%;!important; display: inline-block" class="wrap-input100 validate-input m-b-23 alert-validate" th:if="${session.resultApi != null} and (${session.resultApi.code == 307} or ${session.resultApi.code == 306})" th:data-validate="${session.resultApi.message}">
+						<span class="label-input100">验证码</span>
+						<input  class="input100 code" type="text" name="registerCode" placeholder="请输入验证码" autocomplete="off">
+						<span class="focus-input100" data-symbol="&#xf306;"></span>
+					</div>
+					<div style="width: 75%;!important; display: inline-block" class="wrap-input100 validate-input m-b-23" th:unless="${session.resultApi != null} and (${session.resultApi.code == 307} or ${session.resultApi.code == 306})" data-validate="请输入验证码">
+						<span class="label-input100">验证码</span>
+						<input  class="input100 code" type="text" name="registerCode" placeholder="请输入验证码" autocomplete="off">
+						<span class="focus-input100" data-symbol="&#xf306;"></span>
+					</div>
+					<button type="button" id="sendCode" style="display: inline-block" class="ui blue button">获取验证码</button>
+
+					<!--用户名-->
+					<div class="wrap-input100 validate-input m-b-23 alert-validate" th:if="${session.resultApi != null} and (${session.resultApi.code == 304} or ${session.resultApi.code == 308})" th:data-validate="${session.resultApi.message}">
+						<span class="label-input100">用户名</span>
+						<input class="input100" type="text" name="nikeName" placeholder="请输入用户名(3-12位)" autocomplete="off">
+						<span class="focus-input100" data-symbol="&#xf206;"></span>
+					</div>
+					<div class="wrap-input100 validate-input m-b-23" th:unless="${session.resultApi != null} and (${session.resultApi.code == 304} or ${session.resultApi.code == 308})" data-validate="请输入用户名">
+						<span class="label-input100">用户名</span>
+						<input class="input100" type="text" name="nikeName" placeholder="请输入用户名(3-12位)" autocomplete="off">
+						<span class="focus-input100" data-symbol="&#xf206;"></span>
+					</div>
+
+
+					<!--密码-->
+					<div class="wrap-input100 validate-input m-b-23 alert-validate" th:if="${session.resultApi != null} and (${session.resultApi.code == 303})" th:data-validate="${session.resultApi.message}">
+						<span class="label-input100">密码</span>
+						<input class="input100 password" type="password" name="password" placeholder="请设置密码(6-16位)" autocomplete="off">
+						<span class="focus-input100" data-symbol="&#xf190;"></span>
+					</div>
+					<div class="wrap-input100 validate-input m-b-23" th:unless="${session.resultApi != null} and (${session.resultApi.code == 303})" data-validate="请输入密码">
+						<span class="label-input100">密码</span>
+						<input class="input100 password" type="password" name="password" placeholder="请设置密码(6-16位)" autocomplete="off">
+						<span class="focus-input100" data-symbol="&#xf190;"></span>
+					</div>
+
+
+<!--					<div class="wrap-input100 validate-input m-b-23" data-validate="密码错误">-->
+<!--						<span class="label-input100">确认密码</span>-->
+<!--						<input id="check_password" class="input100 check_password" type="password" name="check_password" placeholder="请确认密码" autocomplete="off">-->
+<!--						<span class="focus-input100" data-symbol="&#xf190;"></span>-->
+<!--					</div>-->
+
+
+
+
+					<div class="container-login100-form-btn m-margin-top
+">
+						<div class="wrap-login100-form-btn">
+							<div class="login100-form-bgbtn"></div>
+							<button id="register" class="login100-form-btn">注 册</button>
+						</div>
+					</div>
+
+					<div class="flex-col-c p-t-25" style="margin-right: 0.2em">
+						<a style="float: right;margin-top: 1em" th:href="@{/login}" class="txt2">已有账号? 立即登录</a>
+					</div>
+
+
+				</form>
+			</div>
+		</div>
+	</div>
+
+
+	<script th:src="@{/vendor/jquery/jquery-3.2.1.min.js}"></script>
+	<script th:src="@{js/main.js}"></script>
+
+	<script>
+		$('#editBlog').click(function() {
+			var isLogin = $('#isLogin').text()
+
+			if (Object.keys(isLogin).length === 0) {
+				layer.alert('请先登录')
+				// window.location.href = "/login"
+			} else {
+				window.location.href = "/blog/goEditBlogPage"
+			}
+		})
+
+
+		$('#sendCode').click(function() {
+			var phone = $('#phone').val()
+			if (phone.length === 0) {
+				layer.msg('手机号不能为空！')
+			}
+			$.getJSON("/sms/sendCode/" + phone,function (data) {
+				if (data.code === 200) {
+					layer.alert('验证码发送成功😊')
+				} else {
+					layer.alert('验证码发送失败吧😭')
+				}
+			});
+		})
+
+	</script>
+</body>
+
+</html>

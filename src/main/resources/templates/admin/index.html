@@ -1,0 +1,32 @@
+﻿
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <title>小千百博客后台管理系统</title>
+    <!-- 引入 layui.css -->
+    <link rel="stylesheet" href="//unpkg.com/layui@2.6.8/dist/css/layui.css">
+    <link rel="shortcut icon" th:href="@{/images/logo.png}" type="image/x-icon">
+    <!-- 本页样式 -->
+    <link th:href="@{/css/adminIndex.css}" rel="stylesheet" />
+</head>
+<body>
+    <div class="mask"></div>
+    <div class="main">
+        <h1><span style="font-size: 84px;">B</span><span style="font-size:30px;">log of 小千百</span></h1>
+        <p id="time"></p>
+        <div class="enter">
+            Please&nbsp;&nbsp;Click&nbsp;&nbsp;Enter
+        </div>
+    </div>
+    <!-- layui.js -->
+    <script src="//unpkg.com/layui@2.6.8/dist/layui.js"></script>
+    <!-- layui规范化用法 -->
+    <script type="text/javascript">
+        layui.config({
+            base: '/js/'
+        }).use('adminIndex');
+    </script>
+</body>
+</html>

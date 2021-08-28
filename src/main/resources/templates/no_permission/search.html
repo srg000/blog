@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="_fragments :: head(~{::title})">
+  <title>搜索结果</title>
+</head>
+
+<body>
+  <!-- 导航 -->
+  <nav th:replace="_fragments :: menu(0)"></nav>
+
+  <!-- 中间部分 -->
+  <div class="m-container m-padded-td-big animate__animated animate__pulse">
+    <!-- ui container：可以切换多端 -->
+    <div class="ui container">
+      <!-- header -->
+      <div class="ui top attached segment">
+        <div class="ui middle aligned two column grid">
+          <div class="column">
+            <h3 class="ui teal header">搜索结果</h3>
+          </div>
+          <div class="right aligned column">
+            共 <h2 class="ui orange header m-inline-block m-text-thin">[[${blogList.size()}]]</h2> 个
+          </div>
+        </div>
+      </div>
+
+      <div class="ui top attached teal stackable segment m-padded-tb-large m-padded-rl m-margin-b-large" th:if="${blogList.size()==0}">
+        <div style="height: 500px;text-align: center">
+          <p class="m-text-style">——TOTALY 0 POSTS——</p>
+          <p class="m-text-thin m-padded-td-large" style="font-size: 16px">这里空空如也</p>
+          <p class="m-text-thin" style="font-size: 16px">你再试试搜索其他关键字吧..</p>
+        </div>
+      </div>
+
+      <!-- 对应选中分类的列表 -->
+      <div class="ui top attached teal segment" th:unless="${blogList.size()==0}">
+        <div class="ui padded vertical segment m-padded-td-large" th:each="blog : ${blogList}">
+          <div class="ui middle aligned mobile reversed stackable grid">
+            <div class="eleven wide column">
+              <h3 class="ui header" ><a th:href="@{'/getBlogById/' + ${blog.id}}" style="text-decoration: none">[[${blog.title}]]</a></h3>
+              <p class="m-text" th:text="${blog.content}"></p>
+              <br>
+              <div class="ui grid">
+                <div class="eleven wide column">
+                  <!-- horizontal：水平list -->
+                  <div class="ui mini horizontal link list">
+                    <div class="item">
+                      <img th:src="${blog.user.avatarUrl}" style="width: 30px; height: 30px" alt="" class="ui avatar image">
+                      <div class="content"><a href="#" class="header" th:text="${blog.user.nikeName}">宋仁刚</a></div>
+                    </div>
+                    <div class="item">
+                      <i class="calendar icon"></i>[[${blog.parseUpdateTime}]]
+                    </div>
+                    <div class="item">
+                      <i class="eye icon"></i>[[${blog.views}]]
+                    </div>
+                  </div>
+                </div>
+                <div class="right aligned five wide column">
+                  <a href="#" target="_blank" class="ui teal basic label m-padded-tiny m-text-thin" th:text="${blog.blogType.name}"></a>
+                </div>
+              </div>
+            </div>
+
+            <div class="five wide column">
+              <a th:href="@{'/getBlogById/' + ${blog.id}}" >
+                <img th:src="${blog.firstPicture}" alt="" class="ui rounded image">
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+  <br>
+  <br>
+
+
+  <footer th:replace="_fragments :: footer"></footer>
+
+  <script type='text/javascript'>
+    $('.menu.toggle').click(function () {
+      // toggleClass：像开关一样的方法，如果开着就关了，如果关了，就开着
+      $('.m-item').toggleClass('m-mobile-hide');
+    });
+
+    $('#editBlog').click(function() {
+      var isLogin = $('#isLogin').text()
+
+      if (Object.keys(isLogin).length === 0) {
+        layer.alert('请先登录')
+        // window.location.href = "/login"
+      } else {
+        window.location.href = "/blog/goEditBlogPage"
+      }
+    })
+
+
+  </script>
+</body>
+
+</html>

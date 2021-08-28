@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.srgstart.blog.mapper.CommentMapper">
+
+    <select id="getCommentsById" resultType="com.srgstart.blog.entity.Comment">
+        select `id`,`nike_name`,`content`,`avatar_url`,`parent_id`,`update_time`,`blog_id`,`reply_name`,`is_blogger`
+        from t_comment
+        where is_deleted = 0 and blog_id = #{blogId} and parent_id = 0
+        order by update_time
+    </select>
+    <select id="getCommentByParentId" resultType="com.srgstart.blog.entity.Comment">
+        select `id`,`nike_name`,`content`,`avatar_url`,`parent_id`,`update_time`,`blog_id`,`reply_name`,`is_blogger`
+        from t_comment
+        where is_deleted = 0 and parent_id = #{parentId}
+        order by update_time
+    </select>
+</mapper>

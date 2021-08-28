@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>博客管理</title>
+  <!-- 引入semantic-ui的css -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+  <!-- 引入动画的css -->
+  <link rel="stylesheet" th:href="@{/css/animate.css}">
+  <link rel="stylesheet" th:href="@{/css/me.css}">
+  <!-- 引入 layui.css -->
+  <link rel="stylesheet" href="//unpkg.com/layui@2.6.8/dist/css/layui.css">
+  <link rel="shortcut icon" th:href="@{/images/logo.png}" type="image/x-icon">
+</head>
+
+<body>
+  <!-- 导航 -->
+  <nav th:replace="_fragments :: menu(5)"></nav>
+  <!-- 二级导航 -->
+  <div class="ui attached pointing menu">
+    <div class="ui container">
+      <div class="right menu">
+        <a th:href="@{/blog/goEditBlogPage}" class="item">发布</a>
+        <a href="#" class="teal active item">列表</a>
+      </div>
+    </div>
+  </div>
+  <span id="isLogin1" hidden th:text="${session.loginUser.id}"></span>
+  <!-- 中间部分 -->
+  <div class="m-container m-padded-td-big animate__animated animate__pulse">
+    <!-- ui container：可以切换多端 -->
+    <div class="ui container">
+      <form action="#" method="POST" class="ui secondary segment form">
+        <div class="inline fields">
+
+          <div class="field m-mobile-wide m-margin-bottom-small">
+            <input type="text" id="title" name="title" placeholder="标题">
+          </div>
+
+          <div class="field m-mobile-wide m-margin-bottom-small">
+            <div class="ui selection dropdown">
+              <input type="hidden" id="typeId" name="typeId">
+              <i class="dropdown icon"></i>
+              <div class="default text">博客分类</div>
+              <div class="menu">
+                <div class="item" th:each="type : ${typeList}" th:data-value="${type.name}"> [[${type.name}]] </div>
+              </div>
+            </div>
+          </div>
+          <div class="field m-mobile-wide m-margin-bottom-small">
+            <div class="ui checkbox">
+              <input type="checkbox" id="isRecommend" name="isRecommend">
+              <label for="isRecommend">推荐</label>
+            </div>
+          </div>
+
+          <div class="field m-mobile-wide m-margin-bottom-small">
+            <button id="searchBlog" type="button" class="ui teal button"><i class="search icon"></i>搜索</button>
+          </div>
+
+
+        </div>
+      </form>
+
+      <div class="ui top attached teal stackable segment m-padded-tb-large m-padded-rl m-margin-b-large" th:if="${perBlogList.getDataList().size()==0}">
+        <div style="height: 500px;text-align: center">
+          <p class="m-text-style">——TOTALY 0 POSTS——</p>
+          <p class="m-text-thin m-padded-td-large" style="font-size: 16px">这里空空如也</p>
+          <p class="m-text-thin" style="font-size: 16px">快去发布文章吧..</p>
+        </div>
+      </div>
+
+      <!-- 表格 -->
+      <table class="ui  teal table" th:unless="${perBlogList.getDataList().size()==0}">
+        <thead>
+          <tr>
+            <th></th>
+            <th style="width: 300px">标题</th>
+            <th>类型</th>
+            <th>推荐</th>
+            <th>状态</th>
+            <th>更新时间</th>
+            <th >操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="perBlog,iter : ${perBlogList.getDataList()}">
+            <td th:text="${iter.count} + ${perBlogList.currentPage}*4">1</td>
+            <td th:text="${perBlog.title}">刻意练习清单</td>
+            <td th:text="${perBlog.blogType.name}">认知升级</td>
+            <td th:text="${perBlog.isRecommend} == 1 ? '是' : '否'">是</td>
+            <td th:text="${perBlog.status} == 2 ? '发布' : '草稿'">草稿</td>
+            <td th:text="${perBlog.parseUpdateTime}">2019-8-11 09:45</td>
+            <td>
+              <a th:href="@{'/blog/goUpdateBlogPage/' + ${perBlog.id}}" class="ui mini blue button"><i class="edit icon"></i> 编辑</a>
+              <a th:onclick="'deleteBlog('+ ${perBlog.id} +')'"  class="ui mini red button"><i class="trash icon"></i> 删除</a>
+            </td>
+          </tr>
+
+
+        </tbody>
+<!--        <tfoot>-->
+<!--          <tr>-->
+<!--            <th colspan="6">-->
+<!--              <div class="ui right floated pagination menu">-->
+<!--                <a class="icon item">-->
+<!--                  <i class="left chevron icon"></i>-->
+<!--                </a>-->
+<!--                <a class="item">1</a>-->
+<!--                <a class="item">2</a>-->
+<!--                <a class="item">3</a>-->
+<!--                <a class="item">4</a>-->
+<!--                <a class="icon item">-->
+<!--                  <i class="right chevron icon"></i>-->
+<!--                </a>-->
+<!--              </div>-->
+<!--            </th>-->
+<!--          </tr>-->
+<!--        </tfoot>-->
+
+        <tfoot>
+        <tr>
+          <th colspan="7">
+            <div style="text-align: center;color: darkslateblue;font-weight: bolder">
+              当前第[[${perBlogList.currentPage}+1]]页，总共[[${perBlogList.pageNum}]]页，总记录数：[[${perBlogList.dataNum}]]
+            </div>
+            <div class="ui mini right floated pagination menu">
+
+              <a class="icon item" th:href="@{'/blog/getPerBlog/' + (${perBlogList.currentPage}-1) + '/4/' + ${session.loginUser.id} + '/null/null/false'}">
+                <i class="left chevron icon"></i>&nbsp;上一页
+              </a>
+              <a class="icon item" th:href="@{'/blog/getPerBlog/' + (${perBlogList.currentPage}-(-1)) + '/4/' + ${session.loginUser.id} + '/null/null/false'}">
+                下一页&nbsp; <i class="right chevron icon"></i>
+              </a>
+            </div>
+          </th>
+        </tr>
+        </tfoot>
+      </table>
+
+      <div class="ui success message" th:unless="${#strings.isEmpty(message)}">
+        <i class="close icon"></i>
+        <div class="header">提示: </div>
+        <p th:text="${message}">恭喜，操作成功！</p>
+      </div>
+
+      <div class="ui error message" th:unless="${#strings.isEmpty(message_fail)}">
+        <i class="close icon"></i>
+        <div class="header">提示: </div>
+        <p th:text="${message_fail}">删除博客失败！</p>
+      </div>
+    </div>
+  </div>
+  <br>
+  <br>
+
+  <!-- 底部footer -->
+  <footer th:replace="_fragments :: footer"></footer>
+
+  <!-- 引入jquery和semantic-ui的js文件 -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
+  <script src="//unpkg.com/layui@2.6.8/dist/layui.js"></script>
+  <script type='text/javascript'>
+    $('.menu.toggle').click(function () {
+      // toggleClass：像开关一样的方法，如果开着就关了，如果关了，就开着
+      $('.m-item').toggleClass('m-mobile-hide');
+    });
+
+    $('.ui.dropdown').dropdown({
+      on: 'hover'
+    });
+
+    //消息提示关闭初始化
+    $('.message .close').on('click', function () {
+      $(this).closest('.message').transition('fade');
+    })
+
+    $('#searchBlog').click(function () {
+      let searchTitle = $('#title').val();
+      let typeId = $('#typeId').val();
+      let isRecommend = $('#isRecommend').prop('checked');
+      let userId =$('#isLogin1').text();
+      if (searchTitle === '') {
+        searchTitle = null
+      }
+      if (typeId === ''){
+        typeId = null
+      }
+      window.location.href = "/blog/getPerBlog/0/4/"+ userId +"/" + searchTitle + "/"+ typeId +"/" + isRecommend;
+    })
+
+    function deleteBlog(blogId) {
+      layer.confirm('您确定要删除这篇博客吗？',{
+        btn: ['确定','取消'],title: '提示'
+      },function () {
+        // 确定按钮的事件
+        window.location.href = "/blog/deleteBlogById/" + blogId;
+        return true;
+      })
+    }
+
+    $("#logout").click(function () {
+      $.getJSON('/logout',function (data) {
+        if (data === 200) {
+          // 注销成功，刷新当前页面
+          location.reload();
+        }
+      })
+    })
+
+
+  </script>
+</body>
+
+</html>

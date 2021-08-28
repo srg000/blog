@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="_fragments :: head(~{::title})">
+  <title>归档</title>
+</head>
+
+<body>
+  <!-- 导航 -->
+  <nav th:replace="_fragments :: menu(4)"></nav>
+
+  <!-- 中间部分 -->
+  <div class="m-container m-padded-td-big animate__animated animate__jackInTheBox">
+    <!-- ui container：可以切换多端 -->
+    <div class="ui container">
+      <!-- header -->
+      <div class="ui top attached padded segment">
+        <div class="ui middle aligned two column grid">
+          <div class="column">
+            <h3 class="ui teal header">归档</h3>
+          </div>
+          <div class="right aligned column">
+            共 <h2 class="ui orange header m-inline-block m-text-thin">[[${blogTotalCount}]]</h2> 篇博客
+          </div>
+        </div>
+      </div>
+
+
+      <div class="js-toc-content m-margin-top-large">
+        <div th:each="archive :${archiveList}" class="m-margin-top-large">
+          <!-- 年份归档部分 -->
+          <!-- center aligned：水平居中 -->
+          <!-- middle aligned：垂直居中 -->
+          <h2 class="ui center aligned header">[[${archive.year}]]</h2>
+          <!-- vertical,可以使菜单变为垂直的 -->
+          <!-- fluid,填充整个宽度 -->
+          <div class="ui fluid vertical menu">
+            <a th:href="@{'/getBlogById/' + ${blog.id}}" class="item" th:each="blog : ${archive.blogList}">
+          <span>
+            <i class="teal circle icon"></i> [[${blog.title}]]
+            <div class="ui teal basic left pointing label m-padded-tiny" th:text="${#dates.format(blog.updateTime,'MMMdd')}">10月2号</div>
+          </span>
+
+              <div class="ui green basic label" th:text="${blog.flag}">原创</div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+
+
+
+<!--      <h2 class="ui center aligned header">2018</h2>-->
+<!--      <div class="ui fluid vertical menu">-->
+<!--        <a href="#" target="_blank" class="item">-->
+<!--          <span>-->
+<!--            <i class="teal circle icon"></i> 关于可以联系的清单-->
+<!--            <div class="ui teal basic left pointing label m-padded-tiny">10月2号</div>-->
+<!--          </span>-->
+<!--         -->
+<!--          <div class="ui green basic label">原创</div>-->
+<!--        </a>-->
+<!--        <a href="#" target="_blank" class="item">-->
+<!--          <span>-->
+<!--            <i class="teal circle icon"></i> 关于可以联系的清单-->
+<!--            <div class="ui teal basic left pointing label m-padded-tiny">10月2号</div>-->
+<!--          </span>-->
+<!--         -->
+<!--          <div class="ui green basic label">原创</div>-->
+<!--        </a>-->
+<!--        <a href="#" target="_blank" class="item">-->
+<!--          <span>-->
+<!--            <i class="teal circle icon"></i> 关于可以联系的清单-->
+<!--            <div class="ui teal basic left pointing label m-padded-tiny">10月2号</div>-->
+<!--          </span>-->
+<!--         -->
+<!--          <div class="ui green basic label">原创</div>-->
+<!--        </a>-->
+<!--      </div>-->
+
+<!--      <h2 class="ui center aligned header">2017</h2>-->
+<!--      <div class="ui fluid vertical menu">-->
+<!--        <a href="#" target="_blank" class="item">-->
+<!--          <span>-->
+<!--            <i class="teal circle icon"></i> 关于可以联系的清单-->
+<!--            <div class="ui teal basic left pointing label m-padded-tiny">10月2号</div>-->
+<!--          </span>-->
+<!--         -->
+<!--          <div class="ui green basic label">原创</div>-->
+<!--        </a>-->
+<!--        <a href="#" target="_blank" class="item">-->
+<!--          <span>-->
+<!--            <i class="teal circle icon"></i> 关于可以联系的清单-->
+<!--            <div class="ui teal basic left pointing label m-padded-tiny">10月2号</div>-->
+<!--          </span>-->
+<!--         -->
+<!--          <div class="ui green basic label">原创</div>-->
+<!--        </a>-->
+<!--        <a href="#" target="_blank" class="item">-->
+<!--          <span>-->
+<!--            <i class="teal circle icon"></i> 关于可以联系的清单-->
+<!--            <div class="ui teal basic left pointing label m-padded-tiny">10月2号</div>-->
+<!--          </span>-->
+<!--         -->
+<!--          <div class="ui green basic label">原创</div>-->
+<!--        </a>-->
+<!--      </div>-->
+
+    </div>
+  </div>
+  <br>
+  <br>
+
+  <!-- 底部footer -->
+  <footer th:replace="_fragments :: footer"></footer>
+
+  <!-- 引入jquery和semantic-ui的js文件 -->
+<!--  <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>-->
+<!--  <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>-->
+  <script type='text/javascript'>
+    $('.menu.toggle').click(function () {
+      // toggleClass：像开关一样的方法，如果开着就关了，如果关了，就开着
+      $('.m-item').toggleClass('m-mobile-hide');
+    });
+
+    $('#editBlog').click(function() {
+      var isLogin = $('#isLogin').text()
+
+      if (Object.keys(isLogin).length === 0) {
+        layer.alert('请先登录')
+        // window.location.href = "/login"
+      } else {
+        window.location.href = "/blog/goEditBlogPage"
+      }
+    })
+  </script>
+</body>
+
+</html>

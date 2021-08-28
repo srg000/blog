@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.srgstart.blog.mapper.BlogMapper">
+    <update id="updateBlog">
+        update t_blog
+        set `is_deleted` = 1
+        where id = #{id};
+    </update>
+    <update id="updateBlogViews">
+        update t_blog
+        set `views` = `views` + 1
+        where id = #{blogId}
+    </update>
+
+    <select id="findBlogById" resultType="com.srgstart.blog.entity.Blog">
+        select `id`,`title`,`content`,`user_id`,`type_id`,`first_picture`,`flag`,`views`,`is_appreciate`,`is_comment`,`share_statement`,`status`,`is_recommend`,`update_time`
+        from t_blog
+        where `id` = #{blogId} and `is_deleted` = 0;
+    </select>
+    <select id="allBlogList" resultType="com.srgstart.blog.entity.Blog">
+        select `id`,`title`,`content`,`user_id`,`type_id`,`first_picture`,`flag`,`views`,`is_appreciate`,`is_comment`,`share_statement`,`status`,`is_recommend`,`update_time`
+        from t_blog
+        where `is_deleted` = 0 and `is_recommend` = 1
+        order by `views` desc
+        limit #{currentPage}, #{limit}
+    </select>
+    <select id="personalBlogList" resultType="com.srgstart.blog.entity.Blog">
+        select `id`,`title`,`content`,`user_id`,`type_id`,`first_picture`,`flag`,`views`,`is_appreciate`,`is_comment`,`share_statement`,`status`,`is_recommend`,`update_time`
+        from t_blog
+        where `is_deleted` = 0 and `user_id` = #{userId}
+        <include refid="PersonalBlogFindCriteria"></include>
+        order by `views` desc
+        limit #{currentPage}, #{limit}
+    </select>
+    <select id="getBlogBySort" resultType="com.srgstart.blog.entity.Blog">
+        select `id`,`title`,`content`,`user_id`,`type_id`,`first_picture`,`flag`,`views`,`is_appreciate`,`is_comment`,`share_statement`,`status`,`is_recommend`,`update_time`
+        from t_blog
+        where `is_deleted` = 0 and `is_recommend` = 1
+        order by `views` desc
+        limit 0, #{maxBlogCount}
+    </select>
+    <select id="searchBlog" resultType="com.srgstart.blog.entity.Blog">
+        select `id`,`title`,`content`,`user_id`,`type_id`,`first_picture`,`flag`,`views`,`is_appreciate`,`is_comment`,`share_statement`,`status`,`is_recommend`,`update_time`
+        from t_blog
+        where `is_deleted` = 0 and `is_recommend` = 1 and `title` like concat('%',#{searchKey},'%') or `content` like concat('%',#{searchKey} ,'%')
+        order by `views` desc;
+    </select>
+    <select id="getBlogListByTypeId" resultType="com.srgstart.blog.entity.Blog">
+        select `id`,`title`,`content`,`user_id`,`type_id`,`first_picture`,`flag`,`views`,`is_appreciate`,`is_comment`,`share_statement`,`status`,`is_recommend`,`update_time`
+        from t_blog
+        where `is_deleted` = 0 and `is_recommend` = 1 and `type_id` = #{typeId}
+        order by `views` desc
+        limit #{currentPage}, #{limit};
+    </select>
+    <select id="getBlogListByIds" resultType="com.srgstart.blog.entity.Blog">
+        select `id`,`title`,`content`,`user_id`,`type_id`,`first_picture`,`flag`,`views`,`is_appreciate`,`is_comment`,`share_statement`,`status`,`is_recommend`,`update_time`
+        from t_blog
+        where `is_deleted` = 0 and `is_recommend` = 1
+        <if test="ids != null and ids.size() > 0">
+            and `id` in
+            <foreach collection="ids" index="index" item="id" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </if>
+        order by `views` desc
+        limit #{currentPage}, #{limit};
+    </select>
+    <select id="getArchiveYear" resultType="java.lang.String">
+        SELECT date_format(b.create_time,'%Y') as year
+        FROM t_blog b
+        where `is_deleted` = 0 and `is_recommend` = 1
+        GROUP BY year
+        ORDER BY year DESC
+    </select>
+    <select id="getBlogListByYear" resultType="com.srgstart.blog.entity.Blog">
+        select `id`,`title`,`content`,`create_time`,`user_id`,`type_id`,`first_picture`,`flag`,`views`,`is_appreciate`,`is_comment`,`share_statement`,`status`,`is_recommend`,`update_time`
+        from t_blog b
+        where `is_deleted` = 0 and `is_recommend` = 1 and DATE_FORMAT(b.create_time,'%Y') = #{year}
+        order by `update_time` DESC
+    </select>
+    <select id="blogCount" resultType="java.lang.Integer">
+        select count(1)
+        from t_blog
+        where `is_deleted` = 0 and `is_recommend` = 1
+    </select>
+    <select id="getPerBlogBySort" resultType="com.srgstart.blog.entity.Blog">
+        select `id`,`title`,`content`,`user_id`,`type_id`,`first_picture`,`flag`,`views`,`is_appreciate`,`is_comment`,`share_statement`,`status`,`is_recommend`,`update_time`
+        from t_blog
+        where `is_deleted` = 0 and `is_recommend` = 1 and `user_id` = #{userId}
+        order by `views` desc
+        limit 0, #{maxBlogCount}
+    </select>
+    <select id="getBlogCountByYear" resultType="java.lang.Integer">
+        select count(1)
+        from t_blog b
+        where `is_deleted` = 0 and `is_recommend` = 1 and DATE_FORMAT(b.create_time,'%Y') = #{year}
+    </select>
+    <select id="getIdByTiltle" resultType="java.lang.Long">
+        select `id`
+        from t_blog
+        where `is_deleted` = 0 and `is_recommend` = 1 and  `title` = #{title}
+    </select>
+    <select id="getViewsByUserId" resultType="java.lang.Integer">
+        select `views`
+        from t_blog
+        where `is_deleted` = 0 and `is_recommend` = 1 and  `user_id` = #{userId}
+    </select>
+
+
+    <sql id="AllBlogFindCriteria">
+        <if test='searchTitle != "null" '>and `title` like concat('%',#{searchTitle},'%')</if>
+    </sql>
+
+
+    <sql id="PersonalBlogFindCriteria">
+        <if test='searchTitle != "null" '>and `title` like concat('%',#{searchTitle},'%')</if>
+        <if test='typeId != "0" '>and `type_id` = #{typeId}</if>
+        <if test=' recommendResult == "1" '>and `is_recommend` = 1 </if>
+    </sql>
+
+</mapper>

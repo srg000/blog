@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="_fragments :: head(~{::title})">
+    <title>首页</title>
+</head>
+
+<style>
+    #rank a:hover {
+        color: rgb(226, 15, 156) !important;;
+    }
+</style>
+
+<body>
+    <!-- 导航 -->
+    <nav th:replace="_fragments :: menu(1)"></nav>
+
+    <!-- 中间部分 -->
+    <div class="m-padded-td-big">
+        <div class="ui container">
+            <div class="ui stackable grid">
+                <!-- 左边11份布局(博客列表) -->
+                <div class="eleven wide column animate__animated animate__fadeInLeft">
+                    <!-- header -->
+                    <div class="ui  segment">
+                        <div class="ui middle aligned two column grid">
+                            <div class="column">
+                                <h3 class="ui teal header">博客</h3>
+                            </div>
+                            <div class="right aligned column">
+                                共 <h2 class="ui orange header m-inline-block m-text-thin">[[${allBlogList.dataNum}]]</h2> 篇
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 文章列表 -->
+                    <div class="ui  segment">
+                        <!-- vertical：可以使该div充满当前部分 -->
+                        <!-- padded：可以离两边更远 -->
+                        <div class="ui padded vertical segment m-padded-td-large" th:each="blog : ${allBlogList.getDataList()}">
+                            <div class="ui middle aligned mobile reversed stackable grid">
+                                <div class="eleven wide column">
+                                    <h3 class="ui header" ><a th:href="@{'/getBlogById/' + ${blog.id}}" style="text-decoration: none">[[${blog.title}]]</a></h3>
+                                    <p class="m-text" th:text="${blog.content}"></p>
+                                    <br>
+                                    <div class="ui grid">
+                                        <div class="eleven wide column">
+                                            <!-- horizontal：水平list -->
+                                            <div class="ui mini horizontal link list">
+                                                <div class="item">
+                                                    <img th:src="${blog.user.avatarUrl}" style="width: 30px; height: 30px" alt="" class="ui avatar image">
+                                                    <div class="content"><a href="#" class="header" th:text="${blog.user.nikeName}">宋仁刚</a></div>
+                                                </div>
+                                                <div class="item">
+                                                    <i class="calendar icon"></i>[[${blog.parseUpdateTime}]]
+                                                </div>
+                                                <div class="item">
+                                                    <i class="eye icon"></i>[[${blog.views}]]
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="right aligned five wide column">
+                                            <a href="#" target="_blank" class="ui teal basic label m-padded-tiny m-text-thin" th:text="${blog.blogType.name}"></a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="five wide column">
+                                    <a th:href="@{'/getBlogById/' + ${blog.id}}" style="text-decoration: none">
+                                        <img th:src="${blog.firstPicture}" alt="" class="ui rounded image">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- footer -->
+                    <div class="ui  segment" th:if="${allBlogList.dataNum > 9}">
+                        <div class="ui middle aligned two column grid" >
+                            <div class="column" >
+                                <a th:href="@{'/blog//getAllBlog/' + (${allBlogList.currentPage}-1) + '/9'}"  class="ui mini teal basic button">上一页</a>
+                            </div>
+                            <div class="right aligned column" >
+                                <a th:href="@{'/blog/getAllBlog/' + (${allBlogList.currentPage}-(-1)) + '/9'}"  class="ui mini teal basic button">下一页</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+    
+
+                <!-- 右边5份布局(右边top) -->
+                <div class="five wide column animate__animated animate__fadeInRight">
+                    <div class="ui segment">
+                        <a th:href="@{/aboutMe}" style="text-decoration: none">
+                            <img th:src="@{/images/bg.jpg}"  class="ui rounded image">
+                            <img th:src="@{/images/iu-1.jpg}" width="70px" height="70px" class="ui centered circular image p">
+                            <p class="ui center aligned header m-padded-tb-min p2" text="${}">srgstart</p>
+                        </a>
+
+                        <p class="ui center aligned header p3 m-text-f">I want something just like this</p>
+                        <div class="ui center aligned container p2 m-padded-t-tiny">
+                            <span class="m-padded-rl-small"><a class="ui teal circular icon button" th:href="#{github}"><i class="github icon"></i> </a></span>
+                            <span class="m-padded-rl-small"><a class="ui wechat green circular icon button"><i class="weixin icon"></i> </a></span>
+                            <span class="m-padded-rl-small"><a class="ui qq blue circular icon button" data-content="2224264747" data-position="bottom center"><i class="qq icon"></i> </a></span>
+                        </div>
+                        <div class="ui weichat-qr flowing popup transition hidden">
+                            <img th:src="@{/images/wechat.jpg}" class="ui rounded image" style="width: 120px;height: 120px;">
+                        </div>
+                    </div>
+
+
+                    <!-- 分类 -->
+                    <!-- 如果需要顶部div变为灰色，需要为segments，并且第一个segment为secondary 表示灰色 -->
+                    <!-- secondary：1、在按钮中表示第二优先级的按钮，第一是submit。2、在div中表示呈现灰色 -->
+                    <div class="ui segments m-margin-top-large">
+
+                        <div class="ui secondary segment">
+                            <div class="ui two column grid">
+                                <div class="column">
+                                    <i class="idea icon"></i>分类
+                                </div>
+                                <div class="right aligned column">
+                                    <a th:href="@{/type/goTypesPage/-1/0/5}" target="_blank">more <i class="angle double right icon"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui teal segment">
+                            <!-- vertical,可以使菜单变为垂直的 -->
+                            <!-- fluid,填充整个宽度 -->
+                            <!-- 如果item下有两个元素，那么这两个元素一左一右分开 -->
+                            <div class="ui fluid vertical menu">
+                                <a th:href="@{'/type/goTypesPage/' + ${type.id} + '/0/5'}" target="_blank" class="item" th:each="type : ${typeList}">
+                                    [[${type.name}]]
+                                    <div class="ui teal basic left pointing label">[[${type.blogCount}]]</div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 标签 -->
+                    <div class="ui segments m-margin-top-large">
+                        <div class="ui secondary segment">
+                            <div class="ui two column grid">
+                                <div class="column">
+                                    <i class="tags icon"></i>标签
+                                </div>
+                                <div class="right aligned column">
+                                    <a th:href="@{/tag/goTagsPage/-1/0/5}" target="_blank">more <i class="angle double right icon"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui teal segment">
+                            <a th:href="@{'/tag/goTagsPage/' + ${tag.id} + '/0/5'}" target="_blank" th:each="tag : ${tagList}" class="ui teal basic left pointing label m-margin-tb-tiny">
+                                [[${tag.name}]]
+                                <div class="detail">[[${tag.blogCount}]]</div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 热文排行 -->
+                    <div class="ui segments m-margin-tb-large">
+                        <div class="ui secondary segment m-black">
+                            <i class="bookmark icon"></i>热文排行
+                        </div>
+                        <div class="ui segment">
+                            <div id="rank" class="ui segment" th:each="rank,iter : ${rankList}">
+                                <a th:href="@{'/getBlogById/' + ${rank.id}}"   class="m-black m-text-thin" style="text-decoration: none;">
+                                    [[${rank.title}]]
+                                    &nbsp;&nbsp;
+                                    <img th:src="@{/images/hot.png}">
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- 二维码 -->
+                    <h4 class="ui horizontal divider header m-margin-top-large">如果喜欢的话</h4>
+                    <div class="ui centered card" style="width: 11em;">
+                        <img src="/images/wechat.jpg" alt="" class="ui rounded image">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+
+
+    <footer th:replace="_fragments :: footer"></footer>
+
+<!--    &lt;!&ndash; 引入jquery和semantic-ui的js文件 &ndash;&gt;-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>-->
+<!--    <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>-->
+    <script type='text/javascript'>
+        $('.menu.toggle').click(function(){
+            // toggleClass：像开关一样的方法，如果开着就关了，如果关了，就开着
+            $('.m-item').toggleClass('m-mobile-hide');
+        })
+
+        document.documentElement.style.setProperty('--animate-duration', '1.5s');
+
+        $('#editBlog').click(function() {
+            var isLogin = $('#isLogin').text()
+
+            if (Object.keys(isLogin).length === 0) {
+                layer.alert('请先登录')
+                // window.location.href = "/login"
+            } else {
+                window.location.href = "/blog/goEditBlogPage"
+            }
+        })
+
+
+
+        $('.qq').popup();
+
+        $('.wechat').popup({
+            popup: $('.weichat-qr'),
+            on: 'hover',
+            position: 'bottom center'
+        });
+
+
+    </script>
+</body>
+
+</html>

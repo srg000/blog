@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.srgstart.blog.mapper.TypeMapper">
+    <update id="updateTypeCount">
+        update t_type set
+        blog_count = (SELECT count(1) FROM `t_blog` where type_id = #{typeId})
+        where id = #{typeId} and is_deleted = 0;
+    </update>
+    <update id="updateTypeBlogCount">
+        update t_type
+        set blog_count = blog_count - 1
+        where id = #{typeId} and is_deleted = 0;
+    </update>
+
+    <select id="getTypeList" resultType="com.srgstart.blog.entity.Type">
+        select `id`,`name`,`update_time`,`blog_count`
+        from t_type
+        where `is_deleted` = 0;
+    </select>
+    <select id="getTypeById" resultType="com.srgstart.blog.entity.Type">
+        select `id`,`name`,`blog_count`,`update_time`
+        from t_type
+        where id = #{id} and is_deleted = 0;
+    </select>
+    <select id="getTypeIdByName" resultType="java.lang.Long">
+        select `id`,`name`
+        from t_type
+        where name = #{name} and is_deleted = 0;
+    </select>
+    <select id="getTypeBySort" resultType="com.srgstart.blog.entity.Type">
+        select `id`,`name`,`update_time`,`blog_count`
+        from t_type
+        where is_deleted = 0
+        order by `blog_count` desc
+        limit 0,#{maxCount};
+    </select>
+    <select id="getAllTypeIds" resultType="java.lang.Long">
+        select `id`
+        from t_type
+        where is_deleted = 0;
+    </select>
+</mapper>
